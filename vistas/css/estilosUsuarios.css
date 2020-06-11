@@ -1,0 +1,18 @@
+a.btnAcciones{
+     padding: 8px;
+     color: white;
+     font-size: .8rem;
+     border-radius: 5px;
+}
+a.btnEditar{
+     background-color: green;
+}
+a.btnEliminar{
+     background-color: red;
+}
+h6.tituloCargarImagen{
+     color: #000;
+     font-weight: lighter;
+     font-size: 1.3rem;
+     margin: 20px 0;
+}
