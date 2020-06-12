@@ -9,6 +9,9 @@ class Ingresar{
                $correo = $_POST["correo"];
                $password = $_POST["password"];
 
+               //encriptamos el password que introduce el usuario para
+               $passwordEncriptada = crypt($password , '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+
                if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $correo)) {
                     
                // API MEKA DESIGN DEBE TENER CREDENCIALES PARA PODER USAR LA API
@@ -50,7 +53,7 @@ class Ingresar{
 
                          $mensaje = "";
                          
-                         if ($correo == $value["correo"] && $password == $value["password"]) {
+                         if ($correo == $value["correo"] && $passwordEncriptada == $value["password"]) {
                          
                               //inicio de sesion del usuario
                               session_start();

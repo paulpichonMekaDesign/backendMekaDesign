@@ -42,8 +42,8 @@
                     <div class="row mb-4 mt-4">
                          <div class="col-md-6">
                               <div class="form-group">
-                                   <label for="imagenPerfil">Seleccione una imagen de perfil</label>
-                                   <input type="file" class="form-control-file" id="imagenPerfil" name="imagenPerfil">
+                                   <label for="imagen">Seleccione una imagen de perfil</label>
+                                   <input type="file" class="form-control-file" id="imagen" name="imagen">
                               </div>
                          </div>
 

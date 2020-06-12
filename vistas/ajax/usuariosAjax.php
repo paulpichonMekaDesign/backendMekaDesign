@@ -1,7 +1,6 @@
 <?php
 
 require_once "../../controladores/usuarios.controlador.php";
-// require_once "../../modelos/usuarios.modelo.php";
 
 class Ajax{
 
@@ -21,9 +20,9 @@ class Ajax{
 }
 
 // Objetos
-if (isset($_FILES["imagenPerfil"]["tmp_name"])) {
+if (isset($_FILES["imagen"]["tmp_name"])) {
      
      $a = new Ajax();
-     $a -> imagen = $_FILES["imagenPerfil"]["tmp_name"];
+     $a -> imagen = $_FILES["imagen"]["tmp_name"];
      $a -> cargarImagen();
 }

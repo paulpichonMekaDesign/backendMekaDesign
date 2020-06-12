@@ -1,6 +1,6 @@
 //variables
 //cargar imagen
-const cargarImagen = document.getElementById('imagenPerfil');
+const cargarImagen = document.getElementById('imagen');
 
 // console.log($(".previsualizarImagenPerfil").html());
 //para cuanodo no haya imagenes en el contenedor de la imagen
@@ -64,7 +64,7 @@ cargarImagen.addEventListener('change', function(e) {
           
           let datos = new FormData();
           
-          datos.append('imagenPerfil', imagen);
+          datos.append('imagen', imagen);
 
           $.ajax({
                url: "vistas/ajax/usuariosAjax.php",

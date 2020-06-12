@@ -25,6 +25,9 @@ if (!$_SESSION["validarSesionMD"]) {
   <link rel="stylesheet" href="vistas/plugins/pluginsAdminLte/datatables-responsive/css/responsive.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="vistas/plugins/dist/css/adminlte.min.css">
+  <!-- sweetalert 2-->
+	<link rel="stylesheet" type="text/css" href="vistas/plugins/sweetalert2/sweetalert2.css"/>
+	<script src="vistas/plugins/sweetalert2/sweetalert2.js"></script>
   <!-- Estilos propios -->
   <link rel="stylesheet" href="vistas/css/estilosUsuarios.css">
   <!-- Google Font: Source Sans Pro -->
@@ -83,16 +86,23 @@ if (!$_SESSION["validarSesionMD"]) {
                     </tr>
                     </thead>
                     <tbody class="text-center">
-                    <tr>
-                         <td class="align-middle">1</td>
+                    <!--<tr>
+                          <td class="align-middle">1</td>
                          <td class="align-middle">Paúl</td>
                          <td class="align-middle">Pichón</td>
                          <td class="align-middle">paul10_barca@hotmail.com</td>
                          <td class="align-middle"><img src="vistas/imagenes/usuarios/imgPerfil/perfil.jpg" alt="" width="40px"></td>
                          <td class="align-middle">Administrador</td>
                          <td class="align-middle">11-Nov-2019</td>
-                         <td class="align-middle"><a class="btnAcciones btnEditar mr-2" href="" title="Editar"><i class="fas fa-edit"></i></a><a class="btnAcciones btnEliminar" href="" title="Eliminar"><i class="fas fa-trash-alt"></i></a></td>
-                    </tr>
+                         <td class="align-middle"><a class="btnAcciones btnEditar mr-2" href="" title="Editar"><i class="fas fa-edit"></i></a><a class="btnAcciones btnEliminar" href="" title="Eliminar"><i class="fas fa-trash-alt"></i></a></td> 
+
+                    </tr>-->
+                    <?php 
+                         
+                          $resistroUsuario = new Usuarios();
+                          $resistroUsuario -> leerRegistrosUsuarioControlador();
+
+                         ?>
                     </tbody>
                     </table>
                </div>
@@ -127,7 +137,7 @@ if (!$_SESSION["validarSesionMD"]) {
 <?php include "modalCrearUsuarios.php"; ?>
 
 <!-- jQuery -->
-<script src="vistas/plugins/pluginsAdminLte/jquery/jquery.min.js"></script>
+ <script src="vistas/plugins/pluginsAdminLte/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="vistas/plugins/pluginsAdminLte/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables -->
