@@ -16,3 +16,10 @@ h6.tituloCargarImagen{
      font-size: 1.3rem;
      margin: 20px 0;
 }
+span.editarImagenPerfil{
+     position: absolute;
+     background-color: #0069D9;
+     color: white;
+     padding: 8px;
+     cursor: pointer;
+}

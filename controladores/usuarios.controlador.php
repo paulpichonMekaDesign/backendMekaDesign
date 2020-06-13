@@ -67,8 +67,10 @@ class Usuarios{
                $correoUsuario = $_POST["correoUsuario"];
                $password = $_POST["password"];
                $tipoUsuario = $_POST["tipoUsuario"];
-               
-               
+               //hash que servira como id para poder editar e identificar al usuario
+               $hash = md5(random_int(0, 1000));
+
+     
                // encriptar la contraseña del usuario agregado
                $passwordEncriptada = crypt($password , '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
 
@@ -81,7 +83,8 @@ class Usuarios{
                                               "correoUsuario" => $correoUsuario,
                                               "password" => $passwordEncriptada,
                                               "imagenRuta" => $ruta,
-                                              "tipoUsuario" => $tipoUsuario
+                                              "tipoUsuario" => $tipoUsuario,
+                                              "hash" => $hash
                                              );
                     
                     $respuesta = UsuariosModelo::registrarUsuario($datosControlador);
@@ -167,7 +170,7 @@ class Usuarios{
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => "GET",
           CURLOPT_HTTPHEADER => array(
-          "Authorization: Basic YTJhYTA3YWFmYXJ0d2V0c2RBRDUyMzU2RkVER2VwSnl3TU4vVC9oc2R0c2ZSVUxDbzE1MUR6VXBSZ0IyOmEyYWEwN2FhZmFydHdldHNkQUQ1MjM1NkZFREdlci5Ma2Z4MzBONlRiYVZ0ZVN0TmRtV0lVNEwuL0VucQ==",
+               "Authorization: Basic YTJhYTA3YWFmYXJ0d2V0c2RBRDUyMzU2RkVER2VrQlpzSDEuVUcuRkNwUjVCNGZxS1lTT2hBN3N2dEZXOmEyYWEwN2FhZmFydHdldHNkQUQ1MjM1NkZFREdlcVhHZHhEZGFuSGtWeElNdFNsRDJ6MDVGZUE2TlRsVw==",
           "Content-Type: application/x-www-form-urlencoded"
           ),
           ));
@@ -187,14 +190,20 @@ class Usuarios{
                // comprobar que el usuario exista en la base de datos de la API
                foreach ($jsonDecode["detalle"] as $key => $value) {
 
-                    if ($value["tipo_usuario"] == 1) {
-                         
-                         $tipoUsuario = "Administrador";
+                    $fecha = $value["fecha_registro"];
+                    $timestamp = strtotime($fecha);
+                    $meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                    $dia = date('d', $timestamp);
+                    $mes = date('m', $timestamp) - 1;
+                    $year = date('Y', $timestamp);
+                    // $hora = date('H:i', $timestamp);
+                    $fecha = "$dia / " . $meses[$mes] . " / $year";
 
-                    }else {
-                         
-                         $tipoUsuario = "Auxiliar";
-                         
+                    // tipo de usuario
+                    if ($value["tipo_usuario"] == 1) {
+                         $tipoUsuario = "Administrador";
+                    }else {                      
+                         $tipoUsuario = "Auxiliar";                       
                     }
 
                     echo '<tr>
@@ -204,8 +213,11 @@ class Usuarios{
                               <td class="align-middle">'.$value["correo"].'</td>
                               <td class="align-middle"><img src="'.$value["foto_perfil"].'" alt="" width="40px"></td>
                               <td class="align-middle">'.$tipoUsuario.'</td>
-                              <td class="align-middle">'.$value["fecha_registro"].'</td>
-                              <td class="align-middle"><a class="btnAcciones btnEditar mr-2" href="" title="Editar"><i class="fas fa-edit"></i></a><a class="btnAcciones btnEliminar" href="" title="Eliminar"><i class="fas fa-trash-alt"></i></a></td> 
+                              <td class="align-middle">'.$fecha.'</td>
+                              <td class="align-middle">
+                              <a class="btnAcciones btnEditar mr-2" href="" title="Editar" data-toggle="modal" data-target="#modalEditarUsuario" id="'.$value["hash"].'"><i class="fas fa-edit"></i></a>
+                              <a class="btnAcciones btnEliminar" href="" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                              </td> 
 
                          </tr>';
                     
@@ -221,5 +233,102 @@ class Usuarios{
           }
 
      }
+
+     // traer informacion para mostrarla en el formulario de editar usuario
+     public function informacionUsuarioEdtCtr($datosControlador){
+
+          $respuesta = UsuariosModelo::informacionUsuarioEdtMdl($datosControlador);
+
+          echo $respuesta;
+
+     }
+
+     public function guardarCambiosCtr(){
+
+          if (isset($_POST["editarInput"])) {
+
+
+               if (isset($_FILES["nuevaImagen"]["tmp_name"]) && !empty($_FILES["nuevaImagen"]["tmp_name"])) {
+                    
+                    //imagen
+                    $imagen = $_FILES["nuevaImagen"]["tmp_name"];
+
+                    $borrarTemp = glob("vistas/imagenes/usuarios/TEMP/*"); 
+
+                    foreach ($borrarTemp as $key => $imagenTemp) {
+                         
+                         unlink($imagenTemp);
+
+                    }
+                    $aleatorio = mt_rand(100, 999);
+                    
+                    $ruta = "vistas/imagenes/usuarios/imgPerfil/imagenPerfil".$aleatorio.".jpg";
+
+                    $origen = imagecreatefromjpeg($imagen);
+
+                    $destino = imagecrop($origen, ["x" => 0, "y" => 0, "width" => 500, "height" => 500]);
+
+                    imagejpeg($origen, $ruta);
+
+                    //borrar imagen antigua
+                    unlink(base64_decode($_POST["antiguaImagen"]));
+
+
+               }else {
+                    
+                    $ruta = base64_decode($_POST["antiguaImagen"]);
+                    
+               }
+
+               $idEditar = $_POST["editarInput"];
+               $nombre = $_POST["edtNombreUsuario"];
+               $apellido = $_POST["edtApellidoUsuario"];
+               $correo = $_POST["edtCorreoUsuario"];
+               $password = $_POST["edtPassword"];
+               $tipo = $_POST["edtTipoUsuario"];
+
+               //encriptar contraseña
+               // $passwordEncriptada = crypt($password , '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+
+
+               // if ($password == "*****") {
+                    
+                    $datosControlador = array("idEditar" => $idEditar,
+                                              "nombre" => $nombre,
+                                              "apellido" => $apellido,
+                                              "correo" => $correo,
+                                              "password" => $password,
+                                              "rutaImagen" => $ruta,
+                                              "tipo" => $tipo,
+                                             );
+
+                    $respuesta = UsuariosModelo::editarInfoUsuariosMdl($datosControlador);
+
+                    echo $respuesta;
+ 
+               /*}else {
+                    
+                    $datosControlador = array("idEditar" => $idEditar,
+                                              "nombre" => $nombre,
+                                              "apellido" => $apellido,
+                                              "correo" => $correo,
+                                              "password" => $passwordEncriptada,
+                                              "rutaImagen" => $ruta,
+                                              "tipo" => $tipo,
+                                             );
+
+                    $respuesta = UsuariosModelo::editarInfoUsuariosMdl($datosControlador);
+
+                    echo $respuesta;
+                    
+               } */
+
+               
+
+          }
+
+     }
+
+
 
 }

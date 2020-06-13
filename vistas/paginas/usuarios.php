@@ -86,23 +86,12 @@ if (!$_SESSION["validarSesionMD"]) {
                     </tr>
                     </thead>
                     <tbody class="text-center">
-                    <!--<tr>
-                          <td class="align-middle">1</td>
-                         <td class="align-middle">Paúl</td>
-                         <td class="align-middle">Pichón</td>
-                         <td class="align-middle">paul10_barca@hotmail.com</td>
-                         <td class="align-middle"><img src="vistas/imagenes/usuarios/imgPerfil/perfil.jpg" alt="" width="40px"></td>
-                         <td class="align-middle">Administrador</td>
-                         <td class="align-middle">11-Nov-2019</td>
-                         <td class="align-middle"><a class="btnAcciones btnEditar mr-2" href="" title="Editar"><i class="fas fa-edit"></i></a><a class="btnAcciones btnEliminar" href="" title="Eliminar"><i class="fas fa-trash-alt"></i></a></td> 
-
-                    </tr>-->
-                    <?php 
+                        <?php 
                          
-                          $resistroUsuario = new Usuarios();
-                          $resistroUsuario -> leerRegistrosUsuarioControlador();
+						$resistroUsuario = new Usuarios();
+						$resistroUsuario -> leerRegistrosUsuarioControlador();
 
-                         ?>
+                        ?>
                     </tbody>
                     </table>
                </div>
@@ -136,6 +125,90 @@ if (!$_SESSION["validarSesionMD"]) {
 <!-- Modal Agregar Usuarios -->
 <?php include "modalCrearUsuarios.php"; ?>
 
+<!-- modal editar usuarios -->
+<!-- Modal -->
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Editar Información Usuarios</h5>
+			</div>
+			<div class="modal-body">
+				<form id="formularioEditarUsuario" method="POST" enctype="multipart/form-data">
+					<div class="form-group">
+						<label for="edtNombreUsuario">Cambiar nombre:</label>
+						<input type="text" class="form-control" id="edtNombreUsuario" name="edtNombreUsuario" placeholder="Nombre de usuario">
+					</div>
+					<div class="form-group">
+						<label for="edtApellidoUsuario">Cambiar apellido:</label>
+						<input type="text" class="form-control" id="edtApellidoUsuario" name="edtApellidoUsuario" placeholder="Apellido de usuario">
+					</div>
+					<div class="form-group">
+						<label for="edtCorreoUsuario">Cambiar correo electronico</label>
+						<input type="text" class="form-control" id="edtCorreoUsuario" name="edtCorreoUsuario" placeholder="Correo de usuario">
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="edtPassword">Cambiar contraseña</label>
+								<input type="password" class="form-control" id="edtPassword" name="edtPassword" placeholder="Contraseña del usuario">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="edtConfirmar_contraseña">Repetir Contraseña</label>
+								<input type="password" class="form-control" id="edtConfirmar_contraseña" name="edtConfirmar_contraseña" placeholder="Repetir Contraseña del usuario">
+							</div>
+						</div>
+					</div>
+
+					<div class="row mb-4 mt-4 d-flex justify-content-center">
+						<div class="col-md-6 contenedorInputFile" style="display: none;">
+							<div class="form-group">
+								<label for="edtImagen">Seleccione una nueva imagen de perfil</label>
+								<input type="file" class="form-control-file" id="edtImagen">
+								<input type="hidden" class="form-control-file" id="antiguaImagen" name="antiguaImagen">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="previsualizarImagenPerfilEdt text-center">
+								
+							</div>
+							<!-- <img src="vistas/imagenes/usuarios/default-user-img.jpg" alt="" width="150px">  -->
+						</div>
+					</div>
+
+					<div class="col-xl-6 col-lg-6 col-md-12">
+						<div class="form-group">
+							<label for="edtTipoUsuario">Cambiar el tipo de usuario:</label>
+							<select class="form-control" id="edtTipoUsuario" name="edtTipoUsuario">
+								<option value=""> - Seleccione una opción - </option>
+								<option value="1">Administrador</option>
+								<option value="0">Auxiliar</option>
+							</select>
+						</div>
+					</div>
+					<input type="hidden" id="editarInput" name="editarInput" value="">
+					<div class="modal-footer text-center">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();">Cancelar</button>
+						<button type="submit" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
+					</div>
+
+					<?php
+						
+						$guardarCambios = new Usuarios();
+						$guardarCambios -> guardarCambiosCtr();
+
+					?>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- jQuery -->
  <script src="vistas/plugins/pluginsAdminLte/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -149,8 +222,10 @@ if (!$_SESSION["validarSesionMD"]) {
 <script src="vistas/plugins/dist/js/adminlte.min.js"></script>
 <!-- jQueryValidate -->
 <script src="vistas/plugins/pluginsAdminLte/jquery-validation/jquery.validate.js"></script>
-<!-- VALIDAR LOGIN -->
+<!-- VALIDAR FORMULARIO CREAR USUARIO -->
 <script src="vistas/js/formularioAgregarUsuario.js"></script>
+<!-- VALIDAR FORMULARIO EDITAR USUARIO -->
+<script src="vistas/js/editarFormularioAgregarUsuario.js"></script>
 <!-- archivo js usuarios -->
 <script src="vistas/js/usuarios.js"></script>
 

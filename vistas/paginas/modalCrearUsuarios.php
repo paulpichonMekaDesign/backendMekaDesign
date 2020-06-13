@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="agregarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="agregarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -61,12 +61,12 @@
                               <select class="form-control" id="tipoUsuario" name="tipoUsuario">
                                    <option value=""> - Seleccione una opción - </option>
                                    <option value="1">Administrador</option>
-                                   <option value="0">Asistente</option>
+                                   <option value="0">Auxiliar</option>
                               </select>
                          </div>
                     </div>
                     <div class="modal-footer text-center">
-                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                          <button type="submit" class="btn btn-primary">Guardar Usuario</button>
                     </div>
 

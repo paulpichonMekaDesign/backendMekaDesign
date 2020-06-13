@@ -26,7 +26,7 @@ class Ingresar{
                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                CURLOPT_CUSTOMREQUEST => "GET",
                CURLOPT_HTTPHEADER => array(
-               "Authorization: Basic YTJhYTA3YWFmYXJ0d2V0c2RBRDUyMzU2RkVER2VwSnl3TU4vVC9oc2R0c2ZSVUxDbzE1MUR6VXBSZ0IyOmEyYWEwN2FhZmFydHdldHNkQUQ1MjM1NkZFREdlci5Ma2Z4MzBONlRiYVZ0ZVN0TmRtV0lVNEwuL0VucQ==",
+               "Authorization: Basic YTJhYTA3YWFmYXJ0d2V0c2RBRDUyMzU2RkVER2VrQlpzSDEuVUcuRkNwUjVCNGZxS1lTT2hBN3N2dEZXOmEyYWEwN2FhZmFydHdldHNkQUQ1MjM1NkZFREdlcVhHZHhEZGFuSGtWeElNdFNsRDJ6MDVGZUE2TlRsVw==",
                "Content-Type: application/x-www-form-urlencoded"
                ),
                ));

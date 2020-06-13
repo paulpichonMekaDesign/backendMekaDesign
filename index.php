@@ -1,5 +1,6 @@
 <?php
 
+// controladores
 require_once "controladores/template.controlador.php";
 require_once "controladores/rutas.controlador.php";
 require_once "controladores/login.controlador.php";
