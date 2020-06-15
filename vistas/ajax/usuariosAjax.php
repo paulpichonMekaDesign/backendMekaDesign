@@ -31,6 +31,23 @@ class Ajax{
 
      }
 
+     //Eliminar usuario
+     public $idEliminar;
+     public $imagenPerfil;
+
+     public function eliminarUsuarioAjax(){
+
+          $datosAjax = array( "idEliminar" => $this->idEliminar,
+                              "imagenPerfil" => $this->imagenPerfil
+                         );
+
+          $respuesta = Usuarios::eliminarUsuarioCtr($datosAjax);
+
+          return $respuesta;
+
+     }
+
+
 }
 
 // Objetos
@@ -48,6 +65,15 @@ if (isset($_POST["idEditar"])) {
      $b = new Ajax();
      $b -> idEditar = $_POST["idEditar"];
      $b -> informacionUsuarioEdt();
+}
+
+//eliminar usuarios
+if (isset($_POST["idEliminar"])) {
+     
+     $c = new Ajax();
+     $c -> idEliminar = $_POST["idEliminar"];
+     $c -> imagenPerfil = $_POST["imagenPerfil"];
+     $c -> eliminarUsuarioAjax();
 
 }
 

@@ -216,7 +216,7 @@ class Usuarios{
                               <td class="align-middle">'.$fecha.'</td>
                               <td class="align-middle">
                               <a class="btnAcciones btnEditar mr-2" href="" title="Editar" data-toggle="modal" data-target="#modalEditarUsuario" id="'.$value["hash"].'"><i class="fas fa-edit"></i></a>
-                              <a class="btnAcciones btnEliminar" href="" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                              <a class="btnAcciones btnEliminar" href="" title="Eliminar" data-toggle="modal" data-target="#eliminarUsuario" id="'.$value["hash"].'"><i class="fas fa-trash-alt"></i></a>
                               </td> 
 
                          </tr>';
@@ -270,8 +270,13 @@ class Usuarios{
 
                     imagejpeg($origen, $ruta);
 
-                    //borrar imagen antigua
-                    unlink(base64_decode($_POST["antiguaImagen"]));
+                    //Borrar imagen
+                    $imagenAntigua = base64_decode($_POST["antiguaImagen"]);
+
+                    if ($imagenAntigua !== "vistas/imagenes/usuarios/default-user-img.jpg") {
+                          //borrar imagen antigua
+                          unlink(base64_decode($_POST["antiguaImagen"]));
+                    }
 
 
                }else {
@@ -287,48 +292,88 @@ class Usuarios{
                $password = $_POST["edtPassword"];
                $tipo = $_POST["edtTipoUsuario"];
 
-               //encriptar contraseña
-               // $passwordEncriptada = crypt($password , '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+               $datosControlador = array("idEditar" => $idEditar,
+                                             "nombre" => $nombre,
+                                             "apellido" => $apellido,
+                                             "correo" => $correo,
+                                             "password" => $password,
+                                             "rutaImagen" => $ruta,
+                                             "tipo" => $tipo,
+                                        );
 
-
-               // if ($password == "*****") {
+               $respuesta = UsuariosModelo::editarInfoUsuariosMdl($datosControlador);
+   
+               if ($respuesta == "ok") {
                     
-                    $datosControlador = array("idEditar" => $idEditar,
-                                              "nombre" => $nombre,
-                                              "apellido" => $apellido,
-                                              "correo" => $correo,
-                                              "password" => $password,
-                                              "rutaImagen" => $ruta,
-                                              "tipo" => $tipo,
-                                             );
-
-                    $respuesta = UsuariosModelo::editarInfoUsuariosMdl($datosControlador);
-
-                    echo $respuesta;
- 
-               /*}else {
+                    echo "<script>
+                                   const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'center',
+                                        showConfirmButton: true,
+                                        timer: 5000,
+                                        timerProgressBar: true,
+                                        onOpen: (toast) => {
+                                             toast.addEventListener('mouseenter', Swal.stopTimer)
+                                             toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                        }
+                                   })
+                                   
+                                   Toast.fire({
+                                        icon: 'success',
+                                        title: 'Correcto',
+                                        text: 'Registro actualizado'
+                                   }).then(function()
+                                   {
+                                        document.location.href='usuarios';
+                                   })
+                              </script>";
                     
-                    $datosControlador = array("idEditar" => $idEditar,
-                                              "nombre" => $nombre,
-                                              "apellido" => $apellido,
-                                              "correo" => $correo,
-                                              "password" => $passwordEncriptada,
-                                              "rutaImagen" => $ruta,
-                                              "tipo" => $tipo,
-                                             );
+               }else{
 
-                    $respuesta = UsuariosModelo::editarInfoUsuariosMdl($datosControlador);
+                    echo "<script>
+                              const Toast = Swal.mixin({
+                                   toast: true,
+                                   position: 'center',
+                                   showConfirmButton: true,
+                                   timer: 5000,
+                                   timerProgressBar: true,
+                                   onOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                   }
+                              })
+                              
+                              Toast.fire({
+                                   icon: 'error',
+                                   title: 'Error',
+                                   text: 'Hubo un error, favor de intentar más tarde'
+                              }).then(function()
+                              {
+                                   document.location.href='usuarios';
+                              })
+                         </script>";
 
-                    echo $respuesta;
-                    
-               } */
-
-               
+               }
 
           }
 
      }
 
+     //Eliminar usuarios
+     public function eliminarUsuarioCtr($datosControlador){
+          
+          $respuesta = UsuariosModelo::eliminarUsuarioMdl($datosControlador);
 
+          //Borrar imagen
+          $borrarImagen = base64_decode($datosControlador["imagenPerfil"]);
+
+          if ($borrarImagen !== "vistas/imagenes/usuarios/default-user-img.jpg") {
+                //borrar imagen antigua
+                unlink("../../".$borrarImagen);
+          }
+          
+          echo $respuesta;
+
+     }
 
 }

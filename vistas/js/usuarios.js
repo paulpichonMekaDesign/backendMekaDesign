@@ -136,27 +136,6 @@ cargarImagen.addEventListener('change', function(e) {
           
      }
      });
-
-     /* $("#guardarCambios").click(function(e){
-          e.preventDefault();
-          e.stopPropagation()
-
-          let nombreUsuario = $(this).parent().parent().children(".form-group").children("input#edtNombreUsuario").val();
-          let apellidoUsuario = $(this).parent().parent().children(".form-group").children("input#edtApellidoUsuario").val();
-          let correoUsuario = $(this).parent().parent().children(".form-group").children("input#edtCorreoUsuario").val();
-          let passwordUsuario = $(this).parent().parent().children(".row").children(".col-md-6").children(".form-group").children("input#edtPassword").val();
-          let tipoUsuario = $(this).parent().parent().children(".col-xl-6").children(".form-group").children("select#edtTipoUsuario").val();
-          
-          console.log(idEditar);
-          
-          console.log(nombreUsuario);
-          console.log(apellidoUsuario);
-          console.log(correoUsuario);
-          console.log(passwordUsuario);
-          console.log(tipoUsuario);  
-
-     }); */
-
      
 });
 
@@ -250,3 +229,108 @@ $(document).on('click', ".editarImagenPerfil", function(){
      });
 
 })
+
+//traer informacion para Eliminar usuarios
+$(".btnEliminar").click(function(){
+
+     let idEditar = $(this).attr("id");
+      
+     let idUsuario = new FormData();
+
+     idUsuario.append("idEditar", idEditar);
+
+     $.ajax({
+          url:"vistas/ajax/usuariosAjax.php",
+          method: "POST",
+          data: idUsuario,
+          cache: false,
+          contentType: false,
+          processData: false,
+          dataType: "json",
+          success: function(respuesta){
+
+               // console.log(respuesta);
+               $("#eliminarUsuarioId").val(respuesta["hash"]);
+               $("#imagenEliminarUsuario").val(btoa(respuesta["foto_perfil"]));
+
+          }
+
+     });
+
+});
+
+//funcion para eliminar usuarios
+ $(".confirmarEliminarUsuario").click(function(){
+
+     let idEliminar = $(this).parent().parent().children("#eliminarUsuarioId").val();
+     let imagenPerfil = $(this).parent().parent().children("#imagenEliminarUsuario").val();
+
+     const datosEliminar = new FormData();
+
+     datosEliminar.append("idEliminar", idEliminar);
+     datosEliminar.append("imagenPerfil", imagenPerfil);
+
+     $.ajax({
+          url:"vistas/ajax/usuariosAjax.php",
+          method: "POST",
+          data: datosEliminar,
+          cache: false,
+          contentType: false,
+          processData: false,
+          success: function(respuesta){
+
+               console.log( respuesta );
+               if (respuesta == "ok") {
+                    
+                    const Toast = Swal.mixin({
+                         toast: true,
+                         position: 'center',
+                         showConfirmButton: true,
+                         timer: 5000,
+                         timerProgressBar: true,
+                         onOpen: (toast) => {
+                              toast.addEventListener('mouseenter', Swal.stopTimer)
+                              toast.addEventListener('mouseleave', Swal.resumeTimer)
+                         }
+                    })
+                    
+                    Toast.fire({
+                         icon: 'success',
+                         title: 'Correcto',
+                         text: 'Registro eliminado'
+                    }).then(function()
+                    {
+                         document.location.href='usuarios';
+                    })
+                    
+               }else{
+     
+                    const Toast = Swal.mixin({
+                         toast: true,
+                         position: 'center',
+                         showConfirmButton: true,
+                         timer: 5000,
+                         timerProgressBar: true,
+                         onOpen: (toast) => {
+                              toast.addEventListener('mouseenter', Swal.stopTimer)
+                              toast.addEventListener('mouseleave', Swal.resumeTimer)
+                         }
+                    })
+                    
+                    Toast.fire({
+                         icon: 'error',
+                         title: 'Error',
+                         text: 'Hubo un error, favor de intentar más tarde'
+                    }).then(function()
+                    {
+                         document.location.href='usuarios';
+                    })
+     
+               }
+               
+
+          }
+     });
+     
+
+ });
